@@ -41,16 +41,37 @@ def read_words(filename):
 
 def print_words(words):
     wordcount = {}
+    words1 = []
     for word in words:
+        words1.extend(word.lower())
+    for word in words1:
         if word not in wordcount:
             wordcount[word] = 1
         else:
             wordcount[word] += 1
-    wordcount1 = {}
-    for i in sorted(words):
-        wordcount1[i] = wordcount[i]
-    print(word, wordcount1)
-    return
+    genexp = ((k, wordcount[k])
+    for k in sorted(wordcount, key=wordcount.get, reverse=True))
+    for k, v in genexp:
+        return k, v
+
+def print_top(words):
+    wordcount = {}
+    words1 = []
+    for word in words:
+        words1.extend(word.lower())
+    for word in words1:
+        if word not in wordcount:
+            wordcount[word] = 1
+        else:
+            wordcount[word] += 1
+    genexp = ((k, wordcount[k])
+              for k in sorted(wordcount, key=wordcount.get, reverse=True))
+    i=1
+    for k, v in genexp:
+        i=i+1
+        if i>21:
+            break
+        return k, v
 
 
 
@@ -66,7 +87,7 @@ def print_words(words):
 # calls the print_words() and print_top() functions which you must define.
 def main():
     if len(sys.argv) != 3:
-        print('usage: ./wordcount.py {--count | --topcount} file')
+      print('usage: ./wordcount.py {--count | --topcount} file')
         sys.exit(1)
 
     option = sys.argv[1]
@@ -74,9 +95,9 @@ def main():
     if option == '--count':
         print_words(filename)
     elif option == '--topcount':
-        print_top(filename)
+       print_top(filename)
     else:
-        print('unknown option: ' + option)
+       print('unknown option: ' + option)
         sys.exit(1)
 
 if __name__ == '__main__':
