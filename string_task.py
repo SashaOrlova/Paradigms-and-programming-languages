@@ -8,7 +8,7 @@
 # Example input: 'read'
 # Example output: 'reading'
 def verbing(s):
-    if len(s)>=3:
+    if len(s) >= 3:
         if s.endswith('ing') :
             return s[:-3]+'ly'
         else: return s+'ing'
@@ -25,10 +25,11 @@ def verbing(s):
 # Example input: 'This dinner is not that bad!'
 # Example output: 'This dinner is good!'
 def not_bad(s):
-    if (s.find('not')!=-1)and(s.find('bad')!=-1):
-        return s[:s.find('not')]+'good'+s[s.find('bad')+3:]
+    i = s.find('not')
+    j = s.find('bad')
+    if (i != -1)and(j != -1)and(i < j):
+        return s[:i]+'good'+s[j+3:]
     else: return s
-
 
 
 # Consider dividing a string into two halves.
@@ -42,8 +43,8 @@ def not_bad(s):
 # Example input: 'abcd', 'xy'
 # Example output: 'abxcdy'
 def front_back(a, b):
-    a1=len(a)//2+len(a)%2
-    b1=len(b)//2+len(b)%2
+    a1 = len(a)//2+len(a)%2
+    b1 = len(b)//2+len(b)%2
     return a[:a1]+b[:b1]+a[a1:]+b[b1:]
 
 def main():
