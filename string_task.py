@@ -9,12 +9,11 @@
 # Example output: 'reading'
 def verbing(s):
     if len(s)>=3:
-        if s.endswith('ly') :
-         s1=s[:-2]+'ing'
-        else: s1=s+'ing'
-    else: s1=s
-    print(s1)
-    return
+        if s.endswith('ing') :
+            return s[:-3]+'ly'
+        else: return s+'ing'
+    else: return s
+
 
 
 # Given a string, find the first appearance of the
@@ -26,9 +25,10 @@ def verbing(s):
 # Example input: 'This dinner is not that bad!'
 # Example output: 'This dinner is good!'
 def not_bad(s):
-    s1=s[:s.find('not')]+'good'+s[s.find('bad')+3:]
-    print(s1)
-    return
+    if (s.find('not')!=-1)and(s.find('bad')!=-1):
+        return s[:s.find('not')]+'good'+s[s.find('bad')+3:]
+    else: return s
+
 
 
 # Consider dividing a string into two halves.
@@ -42,9 +42,10 @@ def not_bad(s):
 # Example input: 'abcd', 'xy'
 # Example output: 'abxcdy'
 def front_back(a, b):
-    s1=a[:len(a)//2+len(a)%2]+b[:len(b)//2+len(b)%2]+a[len(a)//2+len(a)%2:]+b[len(b)//2+len(b)%2:]
-    print(s1)
-    return
+    a1=len(a)//2+len(a)%2
+    b1=len(b)//2+len(b)%2
+    return a[:a1]+b[:b1]+a[a1:]+b[b1:]
+
 def main():
     verbing('read')
     not_bad('This dinner is not that bad!')
