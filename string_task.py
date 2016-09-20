@@ -7,12 +7,12 @@
 #
 # Example input: 'read'
 # Example output: 'reading'
-def verbing(s) :
+def verbing( s ):
     if len(s) >= 3:
-        if s.endswith('ing') :
-            return s[:-3]+'ly'
-        else : return s+'ing'
-    else : return s
+        if s.endswith('ing'):
+            return s[:-3] + 'ly'
+        else: return s + 'ing'
+    else: return s
 
 
 
@@ -24,12 +24,12 @@ def verbing(s) :
 #
 # Example input: 'This dinner is not that bad!'
 # Example output: 'This dinner is good!'
-def not_bad(s) :
+def not_bad(s):
     i = s.find('not')
     j = s.find('bad')
-    if (i != -1)and(i < j) :
-        return s[:i]+'good'+s[j+3:]
-    else : return s
+    if (i != -1) and (i < j):
+        return s[:i] + 'good' + s[j + 3:]
+    else: return s
 
 
 # Consider dividing a string into two halves.
@@ -42,14 +42,14 @@ def not_bad(s) :
 #
 # Example input: 'abcd', 'xy'
 # Example output: 'abxcdy'
-def front_back(a, b) :
-    a1 = len(a)//2+len(a)%2
-    b1 = len(b)//2+len(b)%2
-    return a[:a1]+b[:b1]+a[a1:]+b[b1:]
+def front_back(a,b):
+    a1 = len(a) // 2 + len(a) % 2
+    b1 = len(b) // 2 + len(b) % 2
+    return a[:a1] + b[:b1] + a[a1:] + b[b1:]
 
 def main():
-    verbing('read')
-    not_bad('This dinner is not that bad!')
-    front_back('abcd','xy')
+    verbing( 'read' )
+    not_bad( 'This dinner is not that bad!' )
+    front_back( 'abcd', 'xy' )
 if __name__ == "__main__":
     main()
