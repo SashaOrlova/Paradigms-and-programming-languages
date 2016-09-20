@@ -3,12 +3,12 @@
 # Example input: [1, 2, 2, 3]
 # Example output: [1, 2, 3]
 def remove_adjacent(lst):
+    lst1 = []
+    for i in range(len(lst) - 1):
+        if lst[i] != lst[i + 1]:
+            lst1.append(lst[i])
     if lst:
-        lst1 = []
-        for i in range(len(lst) - 1):
-            if lst[i] != lst[i + 1]:
-                lst1.append(lst[i])
-    lst1.append(lst[-1])
+        lst1.append(lst[-1])
     return lst1
 
 # Merge two sorted lists in one sorted list in linear time
