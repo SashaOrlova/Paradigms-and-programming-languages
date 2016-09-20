@@ -7,7 +7,7 @@
 #
 # Example input: 'read'
 # Example output: 'reading'
-def verbing( s ):
+def verbing(s):
     if len(s) >= 3:
         if s.endswith('ing'):
             return s[:-3] + 'ly'
