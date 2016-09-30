@@ -1,18 +1,18 @@
 import numpy as np
 
 
-def read_arrays(n):
-    new_array = power_of_two(n)
+def read_array(n):
+    array = np.zeros((power_of_two(n), power_of_two(n)), dtype=int)
     for i in range(n):
-        new_array[i, :n] = np.asarray(input().split(), dtype=int)
-    return new_array
+        array[i, :n] = np.asarray(input().split(), dtype=int)
+    return array
 
 
-def power_of_two(n):
-    m = 1
-    while m < n:
-        m *= 2
-    return np.zeros((m, m), dtype=int)
+def raise_to_power_of_two(n):
+    n_extended = 1
+    while n_extended < n:
+        n_extended *= 2
+    return n_extended
 
 
 def split(m):
@@ -37,14 +37,14 @@ def strassen(a, b):
         c12 = p3 + p5
         c21 = p2 + p4
         c22 = p1 + p3 - p2 + p6
-        c1 = np.hstack((c11, c12))
-        c2 = np.hstack((c21, c22))
-        return np.vstack((c1, c2))
+        c_upper = np.hstack((c11, c12))
+        c_lower = np.hstack((c21, c22))
+        return np.vstack((c_upper, c_lower))
 
 
 def print_array(a):
-        for row in a:
-            print(*row)
+    for row in a:
+        print(*row)
 
 
 if __name__ == "__main__":
