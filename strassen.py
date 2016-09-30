@@ -1,14 +1,11 @@
-import numpy as np
-
-
 def read_array(n):
-    array = np.zeros((power_of_two(n), power_of_two(n)), dtype=int)
+    array = np.zeros((round(n), round(n)), dtype=int)
     for i in range(n):
-        array[i, :n] = np.asarray(input().split(), dtype=int)
+        array[i, :n] = np.array(input().split(), dtype=int)
     return array
 
 
-def raise_to_power_of_two(n):
+def round(n):
     n_extended = 1
     while n_extended < n:
         n_extended *= 2
@@ -49,7 +46,7 @@ def print_array(a):
 
 if __name__ == "__main__":
     n = int(input())
-    a = read_arrays(n)
-    b = read_arrays(n)
-    new_array = strassen(a, b)
-    print_array(new_array[:n, :n])
+    a = read_array(n)
+    b = read_array(n)
+    result = strassen(a, b)
+    print_array(result[:n, :n])
