@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def read_array(n):
     array = np.zeros((round(n), round(n)), dtype=int)
     for i in range(n):
