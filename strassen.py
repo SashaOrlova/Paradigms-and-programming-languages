@@ -2,13 +2,13 @@ import numpy as np
 
 
 def read_array(n):
-    array = np.zeros((round(n), round(n)), dtype=int)
+    array = np.zeros((round_matrix(n), round_matrix(n)), dtype=int)
     for i in range(n):
         array[i, :n] = np.array(input().split(), dtype=int)
     return array
 
 
-def round(n):
+def round_matrix(n):
     n_extended = 1
     while n_extended < n:
         n_extended *= 2
