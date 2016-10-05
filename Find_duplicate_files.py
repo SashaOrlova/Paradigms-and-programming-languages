@@ -11,10 +11,10 @@ def hash_file(path):
     return hasher.hexdigest()
 
 
-def findDup(main_folder):
+def find_dup(main_folder):
     dups = collections.defaultdict(list)
-    for dir_name, _, fileList in os.walk(main_folder):
-        for file_name in fileList:
+    for dir_name, _, file_list in os.walk(main_folder):
+        for file_name in file_list:
             path = os.path.join(dir_name, file_name)
             if not file_name.startswith(('.', '~')):
                 if not os.path.islink(path):
@@ -30,4 +30,4 @@ def print_files(dict_with_files):
 
 
 if __name__ == '__main__':
-    print_files(findDup(sys.argv[1]))
+    print_files(find_dup(sys.argv[1]))
