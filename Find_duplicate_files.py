@@ -14,18 +14,19 @@ def hash_file(path):
 def findDup(main_folder):
     dups = collections.defaultdict(list)
     for dir_name, _, fileList in os.walk(main_folder):
-        for filename in fileList:
-            path = os.path.join(dir_name, filename)
-            if not filename.startswith(('.', '~')) and not os.path.islink(path):
-                file_hash = hash_file(path)
-                dups.setdefault(file_hash, []).append(path)
+        for file_name in fileList:
+            path = os.path.join(dir_name, file_name)
+            if not file_name.startswith(('.', '~')):
+                if not os.path.islink(path):
+                    file_hash = hash_file(path)
+                    dups[file_hash].append(os.path.abspath(path))
     return dups
 
 
 def print_files(dict_with_files):
-    for _, lst in dict_with_files.items():
-        if (len(lst) > 1):
-            print(":".join(lst))
+    for file_names in dict_with_files.values():
+        if len(file_names) > 1:
+            print(":".join(file_names))
 
 
 if __name__ == '__main__':
