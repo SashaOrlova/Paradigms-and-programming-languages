@@ -31,7 +31,10 @@ class Function:
 
     def evaluate(self, scope):
         function_answ = list(map(lambda x: x.evaluate(scope), self.body))
-        return function_answ[-1]
+        if function_answ:
+            return function_answ[-1]
+        else:
+            return Number(0)
 
 
 class FunctionDefinition:
@@ -64,7 +67,6 @@ class Conditional:
                 return list(map(lambda x: x.evaluate(scope), self.if_false))
             else:
                 return Number(0)
-        
 
 
 class Print:
@@ -74,7 +76,8 @@ class Print:
 
     def evaluate(self, scope):
         print(self.expr.evaluate(scope).value)
-        return self.expr.evaluate(scope).value
+        return self.expr.evaluate(scope)
+
 
 class Read:
 
@@ -86,6 +89,7 @@ class Read:
         scope[self.name] = Number(value)
         return Number(value)
 
+
 class FunctionCall:
 
     def __init__(self, fun_expr, args=None):
@@ -95,7 +99,8 @@ class FunctionCall:
     def evaluate(self, scope):
         child_scope = Scope(scope)
         list_args = list(map(lambda x: x.evaluate(child_scope), self.args))
-        for new_name, value in zip(self.expr.evaluate(child_scope).args, list_args):
+        for new_name, value in zip(
+                self.expr.evaluate(child_scope).args, list_args):
             child_scope[new_name] = value
         return self.expr.evaluate(child_scope).evaluate(child_scope)
 
@@ -188,7 +193,7 @@ def my_tests():
             Print(
                 BinaryOperation(
                     Reference('first_number'), '*',
-                            Reference('second_number')))])
+                    Reference('second_number')))])
     print("Function for multiplication of two numbers")
     print("Write first number")
     Read("first").evaluate(scope)
@@ -216,9 +221,22 @@ def my_tests():
     Read("number").evaluate(scope)
     Print(UnaryOperation('-', Reference("number"))).evaluate(scope)
     Print(BinaryOperation(
-                    Number(0), '||',
-                            Number(1))).evaluate(scope)
-
+        Number(0), '||',
+        Number(1))).evaluate(scope)
+    scope["nothing"] = Function((), [])
+    FunctionCall(
+        FunctionDefinition(
+            'nothing', scope['nothing']), []).evaluate(scope)
+    print("Write number")
+    print("It will write your number, your number * 2 and your number div 2")
+    scope["a"] = Read("something").evaluate(scope)
+    scope["b"] = Print(Reference('a')).evaluate(scope)
+    Print((BinaryOperation(
+        Reference('b'), '+',
+        Reference('a'))).evaluate(scope)).evaluate(scope)
+    Print((BinaryOperation(
+        Reference('a'), '/',
+        Number(2))).evaluate(scope)).evaluate(scope)
 if __name__ == '__main__':
     example()
     my_tests()
