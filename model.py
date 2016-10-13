@@ -205,6 +205,7 @@ def my_tests():
         FunctionDefinition(
             'multiply_two_numbers', scope['multiply_two_numbers']), [
             Reference("first"), Reference("second")]).evaluate(scope)
+    
     print("Comparison two numbers")
     print("Write first number")
     Read("first").evaluate(scope)
@@ -218,17 +219,21 @@ def my_tests():
                 Number(1))], [
                     Print(
                         Number(0))]).evaluate(scope)
+    
     print("Change sign")
     print("Write number")
     Read("number").evaluate(scope)
     Print(UnaryOperation('-', Reference("number"))).evaluate(scope)
+    
     Print(BinaryOperation(
         Number(0), '||',
         Number(1))).evaluate(scope)
+    
     scope["nothing"] = Function((), [])
     FunctionCall(
         FunctionDefinition(
             'nothing', scope['nothing']), []).evaluate(scope)
+    
     print("Write number")
     print("It will write your number, your number * 2 and your number div 2")
     scope["a"] = Read("something").evaluate(scope)
@@ -245,9 +250,12 @@ def my_tests():
             Reference("a"), "==", Number(201)), [
             Print(
                 Number(1))]).evaluate(scope)
+    
     assert Print(Number(2)).evaluate(scope).value == 2
+    
     print("Write 5")
     assert Read("five").evaluate(scope).value == 5
+    
     assert Conditional(Number(1), [Number(1)]).evaluate(scope).value == 1
     scope["plus one"] = Function(("number"), [BinaryOperation(
         Reference("number"), '+',
