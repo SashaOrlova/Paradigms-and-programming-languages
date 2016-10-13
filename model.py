@@ -25,7 +25,7 @@ class Number:
 
 class Function:
 
-    def __init__(self, args, body):
+    def __init__(self, args, body=None):
         self.args = args
         self.body = body
 
@@ -64,8 +64,8 @@ class Conditional:
                 return Number(0)
         else:
             if self.if_false:
-                return list(map(
-                    lambda x: x.evaluate(scope), self.if_false))[-1]
+                return list(map(lambda x: x.evaluate(scope),
+                                self.if_false))[-1]
             else:
                 return Number(0)
 
@@ -76,8 +76,9 @@ class Print:
         self.expr = expr
 
     def evaluate(self, scope):
-        print(self.expr.evaluate(scope).value)
-        return self.expr.evaluate(scope)
+        num = self.expr.evaluate(scope)
+        print(num.value)
+        return num
 
 
 class Read:
@@ -101,8 +102,7 @@ class FunctionCall:
         child_scope = Scope(scope)
         list_args = list(map(lambda x: x.evaluate(child_scope), self.args))
         function = self.expr.evaluate(scope)
-        for new_name, value in zip(
-                function.args, list_args):
+        for new_name, value in zip(function.args, list_args):
             child_scope[new_name] = value
         return function.evaluate(child_scope)
 
@@ -239,11 +239,27 @@ def my_tests():
     Print((BinaryOperation(
         Reference('a'), '/',
         Number(2))).evaluate(scope)).evaluate(scope)
+    print("Print 1 if your number is 201. Else doing nothing")
     Conditional(
         BinaryOperation(
             Reference("a"), "==", Number(201)), [
             Print(
                 Number(1))]).evaluate(scope)
+    assert Print(Number(2)).evaluate(scope).value == 2
+    print("Write 5")
+    assert Read("five").evaluate(scope).value == 5
+    assert Conditional(Number(1), [Number(1)]).evaluate(scope).value == 1
+    scope["plus one"] = Function(("number"), [BinaryOperation(
+        Reference("number"), '+',
+        Number(1))])
+    scope["return number"] = Function((), [Number(5)])
+    a = FunctionCall(
+        FunctionDefinition(
+            'plus one', scope['plus one']), [FunctionCall(
+                FunctionDefinition('return number', scope['return number']),
+                    [])]).evaluate(scope)
+    assert a.value == 6
+
 if __name__ == '__main__':
     example()
     my_tests()
