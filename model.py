@@ -59,12 +59,13 @@ class Conditional:
         logic_exp = self.condtion.evaluate(scope)
         if logic_exp.value:
             if self.if_true:
-                return list(map(lambda x: x.evaluate(scope), self.if_true))
+                return list(map(lambda x: x.evaluate(scope), self.if_true))[-1]
             else:
                 return Number(0)
         else:
             if self.if_false:
-                return list(map(lambda x: x.evaluate(scope), self.if_false))
+                return list(map(
+                    lambda x: x.evaluate(scope), self.if_false))[-1]
             else:
                 return Number(0)
 
@@ -99,10 +100,11 @@ class FunctionCall:
     def evaluate(self, scope):
         child_scope = Scope(scope)
         list_args = list(map(lambda x: x.evaluate(child_scope), self.args))
+        function = self.expr.evaluate(scope)
         for new_name, value in zip(
-                self.expr.evaluate(child_scope).args, list_args):
+                function.args, list_args):
             child_scope[new_name] = value
-        return self.expr.evaluate(child_scope).evaluate(child_scope)
+        return function.evaluate(child_scope)
 
 
 class Reference:
@@ -237,6 +239,11 @@ def my_tests():
     Print((BinaryOperation(
         Reference('a'), '/',
         Number(2))).evaluate(scope)).evaluate(scope)
+    Conditional(
+        BinaryOperation(
+            Reference("a"), "==", Number(201)), [
+            Print(
+                Number(1))]).evaluate(scope)
 if __name__ == '__main__':
     example()
     my_tests()
