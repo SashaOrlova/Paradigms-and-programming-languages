@@ -264,8 +264,8 @@ def my_tests():
     a = FunctionCall(
         FunctionDefinition(
             'plus one', scope['plus one']), [FunctionCall(
-                FunctionDefinition('return number', scope['return number']),
-                    [])]).evaluate(scope)
+                FunctionDefinition('return number', scope['return number']), []
+                    )]).evaluate(scope)
     assert a.value == 6
 
 if __name__ == '__main__':
