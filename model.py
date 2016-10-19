@@ -258,14 +258,25 @@ def my_tests():
 
     assert Conditional(Number(1), [Number(1)]).evaluate(scope).value == 1
 
-    assert Conditional(Number(1), [Number(1)]).evaluate(scope).value == 1
-
     assert Conditional(Number(1), [], []).evaluate(scope).value == 0
 
-    assert Conditional(Number(0), [], []).evaluate(scope).value == 0
+    assert Conditional(Number(0), None).evaluate(scope).value == 0
 
     assert Conditional(Number(0), [], [Number(1)]).evaluate(scope).value == 1
 
+    assert Conditional(Number(1), None, [Number(1)]).evaluate(scope).value == 0
+
+    assert Conditional(Number(0), [Number(1)], None).evaluate(scope).value == 0
+
+    scope["true"] = Number(1)
+    assert Conditional(
+        Reference("true"), [
+            Number(1)], None).evaluate(scope).value == 1
+
+    scope["false"] = Number(0)
+    assert Conditional(
+        Reference("false"), None, [
+            Number(1)]).evaluate(scope).value == 1
 
 if __name__ == '__main__':
     example()
