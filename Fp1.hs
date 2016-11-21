@@ -1,5 +1,6 @@
 head' (x:_)                  =  x
 
+tail' []                     = []
 tail' (_:xs)                 =  xs
 
 foldl' _ z []                = z
