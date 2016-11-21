@@ -10,9 +10,10 @@ concat' [] ys                = ys
 concat' (x:xs) ys            = x : (concat' xs ys)
 
 take' 0 _                    = []
-take' n (x:xs)               = concat' [x] (take' (n - 1) xs ) 
+take' n (x:xs)               = x : (take' (n - 1) xs ) 
 
 drop' 0 xs                   = xs
+drop' _ []                   = []
 drop' n (x:xs)               = drop' (n - 1) xs
 
 filter' _ []                 = []
