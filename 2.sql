@@ -1,8 +1,9 @@
-select Name, Rate from Country, LiteracyRate
-where Country.Code in (select CountryCode from LiteracyRate
-	where Rate in (select max(Rate) from (
-		select max(Year), Rate from LiteracyRate
-			group by CountryCode)))and
-			(Rate in (select max(Rate) from (
-				select max(Year), Rate from LiteracyRate
-					group by CountryCode)));
+SELECT Country.Name, bRCountry.bRate FROM Country
+INNER JOIN
+(
+	SELECT LiteracyRate.CountryCode AS bCountryCode, LiteracyRate.Rate AS bRate, MAX(LiteracyRate.Year) FROM LiteracyRate
+	GROUP BY LiteracyRate.CountryCode
+ 	ORDER BY LiteracyRate.Rate DESC
+ 	LIMIT 1
+) bRCountry
+ON Country.Code = bRCountry.bCountryCode;
