@@ -21,6 +21,9 @@ class Number:
 
     def evaluate(self, scope):
         return self
+    
+    def accept(self, visitor):
+        return visitor.visit_number(self)
 
 
 class Function:
@@ -36,6 +39,9 @@ class Function:
         else:
             return Number(0)
 
+    def accept(self, visitor):
+        return visitor.visit_function(self)
+
 
 class FunctionDefinition:
 
@@ -46,6 +52,9 @@ class FunctionDefinition:
     def evaluate(self, scope):
         scope[self.name] = self.function
         return self.function
+
+    def accept(self, visitor):
+        return visitor.visit_function_definition(self)
 
 
 class Conditional:
@@ -68,7 +77,9 @@ class Conditional:
                                 self.if_false))[-1]
             else:
                 return Number(0)
-
+            
+    def accept(self, visitor):
+        return visitor.visit_conditional(self)
 
 class Print:
 
@@ -80,6 +91,8 @@ class Print:
         print(num.value)
         return num
 
+    def accept(self, visitor):
+        return visitor.visit_print(self)
 
 class Read:
 
@@ -91,7 +104,9 @@ class Read:
         scope[self.name] = Number(value)
         return Number(value)
 
-
+    def accept(self, visitor):
+        return visitor.visit_read(self)
+        
 class FunctionCall:
 
     def __init__(self, fun_expr, args=None):
@@ -106,6 +121,8 @@ class FunctionCall:
             child_scope[new_name] = value
         return function.evaluate(child_scope)
 
+    def accept(self, visitor):
+        return visitor.visit_funtion_call(self)
 
 class Reference:
 
@@ -115,6 +132,8 @@ class Reference:
     def evaluate(self, scope):
         return scope[self.name]
 
+    def accept(self, visitor):
+        return visitor.visit_reference(self)
 
 class BinaryOperation:
 
@@ -155,6 +174,8 @@ class BinaryOperation:
         else:
             raise NotImplementedError
 
+    def accept(self, visitor):
+        return visitor.visit_binary_operation(self)
 
 class UnaryOperation:
 
@@ -171,7 +192,9 @@ class UnaryOperation:
         else:
             raise NotImplementedError
 
-
+    def accept(self, visitor):
+        return visitor.visit_unary_operation(self)
+        
 def example():
     parent = Scope()
     parent["foo"] = Function(('hello', 'world'),
