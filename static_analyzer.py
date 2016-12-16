@@ -4,7 +4,7 @@ from model import *
 class PureCheckVisitor:
 
     def visit(self, a):
-        return a.visit(self)
+        return a.accept(self)
 
     def visit_number(self, a):
         return True
@@ -56,7 +56,7 @@ class PureCheckVisitor:
 class NoReturnValueCheckVisitor:
 
     def visit(self, a):
-        return a.visit(self)
+        return a.accept(self)
 
     def visit_binary_operation(self, a):
         NoReturnValueCheckVisitor().visit(a.left_part)
