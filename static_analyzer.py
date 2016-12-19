@@ -27,11 +27,13 @@ class PureCheckVisitor:
         return self.visit(a.expr)
 
     def visit_conditional(self, a):
-        tmp = True
-        tmp = tmp and all([self.visit(x) for x in a.if_true])
-        tmp = tmp and all([self.visit(x) for x in a.if_false])
-        tmp = tmp and self.visit(a.condtion)
-        return tmp
+        left = False
+        right = False
+        if a.if_true:
+            right = all([self.visit(x) for x in a.if_true])
+        if a.if_false:
+            left = all([self.visit(x) for x in a.if_false])
+        return left and right
 
     def visit_function(self, a):
         tmp = True
@@ -57,24 +59,22 @@ class NoReturnValueCheckVisitor:
         return self.visit(a.left_part) and self.visit(a.right_part)
 
     def visit_conditional(self, a):
-        if (not a.if_true):
-            all([self.visit(x) for x in a.if_false])
-            return False
-        if (not a.if_false):
-            all([self.visit(x) for x in a.if_true])
-            return False
-        else:
-            return all([self.visit(x) for x in a.if_true]) and all(
-                [self.visit(x) for x in a.if_false])
+        left = False
+        right = False
+        if a.if_true:
+            right = all([self.visit(x) for x in a.if_false])
+        if a.if_false:
+            left = all([self.visit(x) for x in a.if_true])
+        return left and right
 
     def visit_function(self, a):
-        if (not a.body):
+        if not a.body:
             return False
         else:
             return [self.visit(x) for x in a.body][-1]
 
     def visit_function_definition(self, a):
-        if (not self.visit(a.function)):
+        if not self.visit(a.function):
             print(a.name)
         return True
 
@@ -85,7 +85,7 @@ class NoReturnValueCheckVisitor:
         return True
 
     def visit_read(self, a):
-        return True
+        return self.visit(a.expr)
 
     def visit_print(self, a):
         return self.visit(a.expr)
