@@ -122,7 +122,7 @@ class FunctionCall:
         return function.evaluate(child_scope)
 
     def accept(self, visitor):
-        return visitor.visit_funtion_call(self)
+        return visitor.visit_function_call(self)
 
 class Reference:
 
