@@ -27,8 +27,8 @@ class PureCheckVisitor:
         return self.visit(a.expr)
 
     def visit_conditional(self, a):
-        left = False
-        right = False
+        left = True
+        right = True
         if a.if_true:
             right = all([self.visit(x) for x in a.if_true])
         if a.if_false:
@@ -37,8 +37,10 @@ class PureCheckVisitor:
 
     def visit_function(self, a):
         tmp = True
-        tmp = tmp and all([self.visit(x) for x in a.body])
-        tmp = tmp and all([self.visit(x) for x in a.args])
+        if a.body:
+            tmp = tmp and all([self.visit(x) for x in a.body])
+        if a.args:
+            tmp = tmp and all([self.visit(x) for x in a.args])
         return tmp
 
     def visit_function_definition(self, a):
@@ -46,7 +48,8 @@ class PureCheckVisitor:
 
     def visit_function_call(self, a):
         tmp = True
-        tmp = tmp and all([self.visit(x), a.args])
+        if a.args:
+            tmp = tmp and all([self.visit(x), a.args])
         return tmp and self.visit(a.expr)
 
 
@@ -62,9 +65,9 @@ class NoReturnValueCheckVisitor:
         left = False
         right = False
         if a.if_true:
-            right = all([self.visit(x) for x in a.if_false])
+            right = all([self.visit(x) for x in a.if_true])
         if a.if_false:
-            left = all([self.visit(x) for x in a.if_true])
+            left = all([self.visit(x) for x in a.if_false])
         return left and right
 
     def visit_function(self, a):
