@@ -33,14 +33,12 @@ class PureCheckVisitor:
             right = all([self.visit(x) for x in a.if_true])
         if a.if_false:
             left = all([self.visit(x) for x in a.if_false])
-        return left and right
+        return left and right and self.visit(condtion)
 
     def visit_function(self, a):
         tmp = True
         if a.body:
-            tmp = tmp and all([self.visit(x) for x in a.body])
-        if a.args:
-            tmp = tmp and all([self.visit(x) for x in a.args])
+            tmp = all([self.visit(x) for x in a.body])
         return tmp
 
     def visit_function_definition(self, a):
