@@ -64,11 +64,12 @@ class NoReturnValueCheckVisitor:
     def visit_conditional(self, a):
         left = False
         right = False
+        cond = self.visit(a.condtion)
         if a.if_true:
             right = all([self.visit(x) for x in a.if_true])
         if a.if_false:
             left = all([self.visit(x) for x in a.if_false])
-        return left and right
+        return left and right and cond
 
     def visit_function(self, a):
         if not a.body:
