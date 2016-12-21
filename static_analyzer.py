@@ -57,7 +57,9 @@ class NoReturnValueCheckVisitor:
         return a.accept(self)
 
     def visit_binary_operation(self, a):
-        return self.visit(a.left_part) and self.visit(a.right_part)
+        left = self.visit(a.left_part)
+        right = self.visit(a.right_part)
+        return left and right
 
     def visit_conditional(self, a):
         left = False
