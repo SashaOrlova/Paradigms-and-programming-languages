@@ -22,7 +22,7 @@ class TestConditional:
             BinaryOperation(
                 Number(3), ">", Number(2)), [
                     Number(1)], [
-                        Number(0)])) == 1
+                        Number(0)])) != 0
 
     def test_simple_empty_conditional(self):
         scope = {}
@@ -84,22 +84,40 @@ class TestFunctionCall:
 
 class TestBinaryOperation:
 
-    def test_logic_binary_operation(self):
+    def test_or_binary_operation(self):
         assert get_v(BinaryOperation(Number(0), '||', Number(1))) != 0
+
+    def test_and_binary_operation(self):
         assert get_v(BinaryOperation(Number(0), '&&', Number(1))) == 0
 
-    def test_comparison_binary_operation(self):
+    def test_comparison_operator_more_binary_operation(self):
         assert get_v(BinaryOperation(Number(4), '>', Number(5))) == 0
+
+    def test_comparison_operator_less_binary_operation(self):
         assert get_v(BinaryOperation(Number(4), '<', Number(5))) != 0
+
+    def test_equally_binary_operation(self):
         assert get_v(BinaryOperation(Number(5), '==', Number(5))) != 0
+
+    def test_not_equally_binary_operation(self):
         assert get_v(BinaryOperation(Number(4), '!=', Number(5))) != 0
+
+    def test_comparison_operator_more_and_equally_binary_operation(self):
         assert get_v(BinaryOperation(Number(0), '<=', Number(1))) != 0
+
+    def test_comparison_operator_less_and_equally_binary_operation(self):
         assert get_v(BinaryOperation(Number(4), '>=', Number(5))) == 0
 
-    def test_arifmetic_binary_operation(self):
+    def test_division_binary_operation(self):
         assert get_v(BinaryOperation(Number(10), '/', Number(5))) == 2
+
+    def test_plus_binary_operation(self):
         assert get_v(BinaryOperation(Number(4), '+', Number(5))) == 9
+
+    def test_division_multiply_operation(self):
         assert get_v(BinaryOperation(Number(4), '*', Number(5))) == 20
+
+    def test_division_minus_operation(self):
         assert get_v(BinaryOperation(Number(6), '-', Number(5))) == 1
 
 
@@ -131,7 +149,7 @@ class TestUnaryOperation:
         assert get_v(UnaryOperation('-', Number(4))) == -4
 
     def test_not_unary_operation(self):
-        assert get_v(UnaryOperation('!', Number(0))) != 0
+        assert get_v(UnaryOperation('!', Number(0))) == 1
 
 
 class TestScope:
@@ -152,35 +170,29 @@ class TestScope:
 
 class TestPrint:
 
-    def test_print_simple(self):
+    def test_print_simple(self, monkeypatch):
         scope = {}
         ex = Number(1)
-        old_stdout = sys.stdout
-        sys.stdout = io.StringIO()
+        monkeypatch.setattr(sys, "stdout", io.StringIO())
         Print(ex).evaluate(scope)
         res = int(sys.stdout.getvalue())
-        sys.stdout = old_stdout
         assert res == 1
 
-    def test_print_with_evaluate(self):
+    def test_print_with_evaluate(self, monkeypatch):
         scope = {}
         ex = BinaryOperation(Number(10), '/', Number(5))
-        old_stdout = sys.stdout
-        sys.stdout = io.StringIO()
+        monkeypatch.setattr(sys, "stdout", io.StringIO())
         Print(ex).evaluate(scope)
         res = int(sys.stdout.getvalue())
-        sys.stdout = old_stdout
         assert res == 2
 
 
 class TestRead:
 
-    def test_read_simple(self):
+    def test_read_simple(self, monkeypatch):
         scope = {}
-        old_stdin = sys.stdin
-        sys.stdin = io.StringIO('6')
+        monkeypatch.setattr(sys, 'stdin', io.StringIO('6'))
         t = Read('a').evaluate(scope)
-        sys.stdin = old_stdin
         assert get_v(t) == 6
 
 
