@@ -68,34 +68,39 @@ class TestFunctionCall:
     def test_function_call(self):
         scope = {}
         scope["multiply_two_numbers"] = Function(
-        ('first_number', 'second_number'), [
-             BinaryOperation(
-                Reference('first_number'), '*',
-                Reference('second_number'))])
+            ('first_number', 'second_number'), [
+                BinaryOperation(
+                    Reference('first_number'), '*',
+                    Reference('second_number'))])
         scope['first'] = Number(3)
         scope['second'] = Number(4)
-        scope 
+        scope
         t = FunctionCall(
-        FunctionDefinition(
-            'multiply_two_numbers', scope['multiply_two_numbers']), [
-            Reference("first"), Reference("second")]).evaluate(scope)
+            FunctionDefinition(
+                'multiply_two_numbers', scope['multiply_two_numbers']), [
+                Reference("first"), Reference("second")]).evaluate(scope)
         assert get_v(t) == 12
-        
+
+
 class TestBinaryOperation:
 
-    def test_simple_binary_operation(self):
-        assert get_v(BinaryOperation(Number(4), '+', Number(5))) == 9
+    def test_logic_binary_operation(self):
         assert get_v(BinaryOperation(Number(0), '||', Number(1))) != 0
-        assert get_v(BinaryOperation(Number(4), '*', Number(5))) == 20
-        assert get_v(BinaryOperation(Number(4), '>', Number(5))) == 0
-        assert get_v(BinaryOperation(Number(6), '-', Number(5))) == 1
         assert get_v(BinaryOperation(Number(0), '&&', Number(1))) == 0
+
+    def test_comparison_binary_operation(self):
+        assert get_v(BinaryOperation(Number(4), '>', Number(5))) == 0
         assert get_v(BinaryOperation(Number(4), '<', Number(5))) != 0
         assert get_v(BinaryOperation(Number(5), '==', Number(5))) != 0
         assert get_v(BinaryOperation(Number(4), '!=', Number(5))) != 0
         assert get_v(BinaryOperation(Number(0), '<=', Number(1))) != 0
         assert get_v(BinaryOperation(Number(4), '>=', Number(5))) == 0
+
+    def test_arifmetic_binary_operation(self):
         assert get_v(BinaryOperation(Number(10), '/', Number(5))) == 2
+        assert get_v(BinaryOperation(Number(4), '+', Number(5))) == 9
+        assert get_v(BinaryOperation(Number(4), '*', Number(5))) == 20
+        assert get_v(BinaryOperation(Number(6), '-', Number(5))) == 1
 
 
 class TestReference:
@@ -119,13 +124,14 @@ class TestReference:
                 Number(1)], [Number(0)]).evaluate(scope)
         assert get_v(res) == 1
 
-        
 
 class TestUnaryOperation:
 
-    def test_simple_unary_operation(self):
+    def test_minus_unary_operation(self):
         assert get_v(UnaryOperation('-', Number(4))) == -4
-        assert get_v(UnaryOperation('!', Number(0))) == 1
+
+    def test_not_unary_operation(self):
+        assert get_v(UnaryOperation('!', Number(0))) != 0
 
 
 class TestScope:
@@ -143,11 +149,12 @@ class TestScope:
         scope = Scope(parent)
         assert scope['foo'] is foo
 
+
 class TestPrint:
 
     def test_print_simple(self):
         scope = {}
-        ex = Number(1);
+        ex = Number(1)
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()
         Print(ex).evaluate(scope)
@@ -157,7 +164,7 @@ class TestPrint:
 
     def test_print_with_evaluate(self):
         scope = {}
-        ex = BinaryOperation(Number(10), '/', Number(5));
+        ex = BinaryOperation(Number(10), '/', Number(5))
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()
         Print(ex).evaluate(scope)
@@ -167,15 +174,15 @@ class TestPrint:
 
 
 class TestRead:
-    
+
     def test_read_simple(self):
         scope = {}
-        old_stdin = sys.stdin 
+        old_stdin = sys.stdin
         sys.stdin = io.StringIO('6')
         t = Read('a').evaluate(scope)
         sys.stdin = old_stdin
-        assert get_v(t) == 6 
+        assert get_v(t) == 6
 
-    
+
 if __name__ == "__main__":
     pytest.main()
