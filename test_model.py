@@ -85,7 +85,7 @@ class TestBinaryOperation:
 
     def test_simple_binary_operation(self):
         assert get_v(BinaryOperation(Number(4), '+', Number(5))) == 9
-        assert get_v(BinaryOperation(Number(0), '||', Number(1))) == 1
+        assert get_v(BinaryOperation(Number(0), '||', Number(1))) != 0
         assert get_v(BinaryOperation(Number(4), '*', Number(5))) == 20
         assert get_v(BinaryOperation(Number(4), '>', Number(5))) == 0
         assert get_v(BinaryOperation(Number(6), '-', Number(5))) == 1
