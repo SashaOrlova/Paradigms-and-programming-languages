@@ -19,8 +19,7 @@ class TestConditional:
 
     def test_simple_conditional(self):
         assert get_v(Conditional(
-            BinaryOperation(
-                Number(3), ">", Number(2)), [
+           Number(7), [
                     Number(1)], [
                         Number(0)])) != 0
 
@@ -149,7 +148,7 @@ class TestUnaryOperation:
         assert get_v(UnaryOperation('-', Number(4))) == -4
 
     def test_not_unary_operation(self):
-        assert get_v(UnaryOperation('!', Number(0))) == 1
+        assert get_v(UnaryOperation('!', Number(0))) != 0
 
 
 class TestScope:
