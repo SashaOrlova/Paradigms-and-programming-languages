@@ -30,7 +30,7 @@ class TestConditional:
 
     def test_empty_conditional(self):
         scope = {}
-        Conditional(Number(1), [], []).evauate(scope)
+        Conditional(Number(1), [], []).evaluate(scope)
         Conditional(Number(0), None).evaluate(scope)
         Conditional(Number(0), [], [Number(1)]).evaluate(scope)
         Conditional(Number(1), None, [Number(1)]).evaluate(scope)
@@ -116,7 +116,7 @@ class TestReference:
         scope["true"] = Number(1)
         res = Conditional(
             Reference("true"), [
-                Number(1)], Number(0)).evaluate(scope)
+                Number(1)], [Number(0)]).evaluate(scope)
         assert get_v(res) == 1
 
         
