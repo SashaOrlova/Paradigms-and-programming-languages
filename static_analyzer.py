@@ -66,9 +66,9 @@ class NoReturnValueCheckVisitor:
         right = False
         cond = self.visit(a.condtion)
         if a.if_true:
-            right = all([self.visit(x) for x in a.if_true])
+            right = [self.visit(x) for x in a.if_true][-1]
         if a.if_false:
-            left = all([self.visit(x) for x in a.if_false])
+            left = [self.visit(x) for x in a.if_false][-1]
         return left and right and cond
 
     def visit_function(self, a):
