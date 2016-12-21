@@ -25,14 +25,16 @@ class TestConditional:
                         Number(0)])) == 1
 
     def test_simple_empty_conditional(self):
-        get_v(Conditional(Number(1), [Number(1)]))
+        scope = {}
+        Conditional(Number(1), [Number(1)]).evaluate(scope)
 
     def test_empty_conditional(self):
-        get_v(Conditional(Number(1), [], []))
-        get_v(Conditional(Number(0), None))
-        get_v(Conditional(Number(0), [], [Number(1)])) 
-        get_v(Conditional(Number(1), None, [Number(1)]))
-        get_v(Conditional(Number(0), [Number(1)], None))
+        scope = {}
+        Conditional(Number(1), [], []).evauate(scope)
+        Conditional(Number(0), None).evaluate(scope)
+        Conditional(Number(0), [], [Number(1)]).evaluate(scope)
+        Conditional(Number(1), None, [Number(1)]).evaluate(scope)
+        Conditional(Number(0), [Number(1)], None).evaluate(scope)
 
 
 class TestFunction:
@@ -41,7 +43,8 @@ class TestFunction:
         assert get_v(Function((), [Number(1)])) == 1
 
     def test_empty_function(self):
-        get_v(Function((), []))
+        scope = {}
+        Function((), []).evaluate(scope)
 
 
 class TestFunctionDefinition:
@@ -87,10 +90,10 @@ class TestBinaryOperation:
         assert get_v(BinaryOperation(Number(4), '>', Number(5))) == 0
         assert get_v(BinaryOperation(Number(6), '-', Number(5))) == 1
         assert get_v(BinaryOperation(Number(0), '&&', Number(1))) == 0
-        assert get_v(BinaryOperation(Number(4), '<', Number(5))) == 1
-        assert get_v(BinaryOperation(Number(5), '==', Number(5))) == 1
-        assert get_v(BinaryOperation(Number(4), '!=', Number(5))) == 1
-        assert get_v(BinaryOperation(Number(0), '<=', Number(1))) == 1
+        assert get_v(BinaryOperation(Number(4), '<', Number(5))) != 0
+        assert get_v(BinaryOperation(Number(5), '==', Number(5))) != 0
+        assert get_v(BinaryOperation(Number(4), '!=', Number(5))) != 0
+        assert get_v(BinaryOperation(Number(0), '<=', Number(1))) != 0
         assert get_v(BinaryOperation(Number(4), '>=', Number(5))) == 0
         assert get_v(BinaryOperation(Number(10), '/', Number(5))) == 2
 
