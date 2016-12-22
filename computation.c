@@ -1,7 +1,8 @@
 #include "computation.h"
 
 void thpool_submit_computation(struct ThreadPool *pool, struct Computation *computation,
-    OnComputationComplete on_complete, void* on_complete_arg){
+    OnComputationComplete on_complete, void* on_complete_arg)
+{
 	pthread_mutex_init(&computation->m, NULL);
 	pthread_cond_init(&computation->finished_cond, NULL);
 	computation->complete = 0;
