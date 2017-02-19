@@ -13,7 +13,7 @@ protected:
 public:
 	virtual void read(std::istream& os) = 0;
 	virtual void fread(std::ifstream& os) = 0;
-	virtual void write(std::ostream& os);
+	virtual void write(std::ostream& os) = 0;
 	virtual void fwrite(std::ofstream& os) = 0;
 	virtual int salary() const = 0;
 	virtual ~Employee();

@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -O2 -Wall -Werror -std=c++03 -Iinclude
 LDFLAGS = 
 
-EXE = main
+EXE = empl_db
 SRCDIR = src
 BINDIR = bin
 
